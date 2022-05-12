@@ -1,0 +1,2 @@
+Database of unicode
+Find a way to compare them that isn't machine code (unless it's easier)
