@@ -1,8 +1,9 @@
 import pygame as pg
 
 class Screen: #Calls the refresh method using parameters to determine its size
-    while True:
-        print(WIP)
+    width = 1920
+    height =1080
+    refresh(width, height)
 
 def refresh(width, height):
     fps = 60
