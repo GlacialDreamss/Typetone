@@ -1,2 +1,2 @@
 class Keys:
-    
+    close = KeyboardInterrupt
