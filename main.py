@@ -4,6 +4,7 @@ class Screen: #Calls the refresh method using parameters to determine its size
     width = 1920
     height =1080
     refresh(width, height)
+    print()
 
 def refresh(width, height):
     fps = 60
