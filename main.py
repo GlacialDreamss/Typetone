@@ -31,7 +31,7 @@ class Game():
 
     #Loop function
     def scourge(e):
-        pgm.display.set_caption("Deez")
+        pgm.display.set_caption("Typetone")
         e.clock.tick(e.fps)
         pgm.display.update()
         e.screen.fill((255, 255, 255))
