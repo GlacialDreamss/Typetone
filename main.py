@@ -27,7 +27,9 @@ class Game():
         while True:
             e.scourge()
             if e.mouse[0] and e.mousePos not in e.posList: e.posList.append(e.mousePos)
-            for pixel in e.posList: e.screen.set_at(pixel, (0, 0, 0))
+            for pixel in e.posList: 
+                #e.screen.set_at(pixel, (0, 0, 0))
+                pgm.draw.aaline(pgm.display,(0, 0, 0),pixel,pixel,int = 1)
 
     #Loop function
     def scourge(e):
