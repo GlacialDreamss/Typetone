@@ -17,8 +17,9 @@ class Game():
         e.prevKeys = e.keys
 
         #Mouse Definitions
-        e.mouse = pgm.mouse.get_pressed()
+        e.mousePress = pgm.mouse.get_pressed()
         e.mousePos = pgm.mouse.get_pos()
+        e.mouseMove = pgm.MOUSEMOTION
 
         e.posList = []
 
@@ -26,10 +27,19 @@ class Game():
     def main(e):
         while True:
             e.scourge()
-            if e.mouse[0] and e.mousePos not in e.posList: e.posList.append(e.mousePos)
-            for pixel in e.posList: 
-                #e.screen.set_at(pixel, (0, 0, 0))
-                pgm.draw.aaline(pgm.display,(0, 0, 0),pixel,pixel,int = 1)
+
+            if e.mousePress[0] and e.mousePos not in e.posList: 
+                e.posList.append(e.mousePos)
+
+
+            for pixelPos in e.posList:
+                e.screen.set_at(pixelPos, (0, 0, 0))
+                pgm.draw.aaline(e.screen,(0, 0, 0), prevPixelPos, pixelPos)
+                pgm.draw.circle(e.screen, (0, 0, 0), pixelPos, 5.0)
+            
+            #What I need to do for this to work is have an iteration before the previous pixel is defined
+            prevPixelPos = pixelPos 
+
 
     #Loop function
     def scourge(e):
@@ -41,8 +51,9 @@ class Game():
         for event in pgm.event.get():
             if event == pgm.QUIT:
                 exit()
+        
 
-        e.mouse = pgm.mouse.get_pressed()
+        e.mousePress = pgm.mouse.get_pressed()
         e.mousePos = pgm.mouse.get_pos()
 
         e.prevKeys = e.keys
