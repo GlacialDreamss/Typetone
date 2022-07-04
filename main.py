@@ -66,6 +66,7 @@ class Game():
 
     #Loop function
     def scourge(e):
+        e.first = False
         pgm.display.set_caption("Typetone")
         e.clock.tick(e.fps)
         pgm.display.update()
