@@ -24,7 +24,7 @@ class Game():
         e.mouseMove = pgm.MOUSEMOTION
 
         e.posList = []
-        e.posListCalc = []
+        e.posListRound = []
 
     #Main function
     def main(e):
@@ -44,7 +44,7 @@ class Game():
             for pixel in e.posList: 
                 e.screen.set_at(pixel, (0, 0, 0))
             
-            for pixel in e.posListCalc:
+            for pixel in e.posListRound:
                 e.screen.set_at(pixel, (0, 0, 0))
 
     def drawLine(e, p1, p2):
@@ -60,8 +60,8 @@ class Game():
             v[0] += unit[0] # move along line by one unit vector
             v[1] += unit[1] # same thing but for the y-vlues, you have to do them separately
 
-            rV = [int(v[0]), int(v[1])]
-            if rV not in e.posList: e.posListCalc.append(rV)
+            rV = [int(v[0]), int(v[1])] #The x and y positions are rounded
+            if rV not in e.posList: e.posListRound.append(rV) #The rounded position is put in a separate list
 
 
     #Loop function
