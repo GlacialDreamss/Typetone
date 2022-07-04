@@ -31,18 +31,20 @@ class Game():
             if e.mousePress[0] and e.mousePos not in e.posList: 
                 e.posList.append(e.mousePos)
 
-
-            for pixelPos in e.posList:
-                e.screen.set_at(pixelPos, (0, 0, 0))
-                pgm.draw.aaline(e.screen,(0, 0, 0), prevPixelPos, pixelPos)
-                pgm.draw.circle(e.screen, (0, 0, 0), pixelPos, 5.0)
+            if e.first:
+                for pixelPos in e.posList:
+                    e.screen.set_at(pixelPos, (0, 0, 0))
+                    pgm.draw.aaline(e.screen,(0, 0, 0), prevPixelPos, pixelPos)
+                    pgm.draw.circle(e.screen, (0, 0, 0), pixelPos, 5.0)
             
             #What I need to do for this to work is have an iteration before the previous pixel is defined
-            prevPixelPos = pixelPos 
+            prevPixelPos = pixelPos
+            e.first = True 
 
 
     #Loop function
     def scourge(e):
+        e.first = False
         pgm.display.set_caption("Typetone")
         e.clock.tick(e.fps)
         pgm.display.update()
