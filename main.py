@@ -21,6 +21,7 @@ class Game():
         e.mouse = pgm.mouse.get_pressed()
         e.prevMouse = e.mouse
         e.mousePos = pgm.mouse.get_pos()
+        e.mouseMove = pgm.MOUSEMOTION
 
         e.posList = []
         e.posListCalc = []
@@ -73,6 +74,7 @@ class Game():
         for event in pgm.event.get():
             if event == pgm.QUIT:
                 exit()
+        
 
         #Values reset after every frame
         e.mouse = pgm.mouse.get_pressed()
