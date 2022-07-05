@@ -60,6 +60,9 @@ class Game():
             rV = [int(v[0]), int(v[1])] 
             if rV not in e.posList: e.posList.append(rV)
 
+    def undo(e):
+        print
+
     #Loop function
     def scourge(e):
         e.first = False
