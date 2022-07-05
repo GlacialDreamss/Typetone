@@ -44,7 +44,7 @@ class Game():
             for pixel in e.posList: 
                 e.screen.set_at(pixel, (0, 0, 0))
 
-    def drawLine(e, p1, p2):
+    def drawLine(e, p1, p2): 
         x = p2[0] - p1[0] # difference in x-values
         y = p2[1] - p1[1] # difference in y-values
         
@@ -57,14 +57,14 @@ class Game():
             v[0] += unit[0] # move along line by one unit vector
             v[1] += unit[1] # same thing but for the y-vlues, you have to do them separately
 
-            rV = [int(v[0]), int(v[1])]
+            rV = [int(v[0]), int(v[1])] 
             if rV not in e.posList: e.posList.append(rV)
 
     #Loop function
     def scourge(e):
         e.first = False
         pgm.display.set_caption("Typetone")
-        e.clock.tick(e.fps)
+        e.clock.tick(e.fps)s
         pgm.display.update()
         e.screen.fill((255, 255, 255))
 
