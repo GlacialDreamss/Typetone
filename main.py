@@ -9,7 +9,7 @@ class Game():
         #Screen Definitions
         e.screen_width, e.screen_height = 800,600
         e.screen = pgm.display.set_mode((e.screen_width, e.screen_height))
-        e.fps = 1
+        e.fps = 30
         e.clock = pgm.time.Clock()
         e.screen.fill((255, 255, 255))       
 
@@ -64,7 +64,7 @@ class Game():
     def scourge(e):
         e.first = False
         pgm.display.set_caption("Typetone")
-        e.clock.tick(e.fps)s
+        e.clock.tick(e.fps)
         pgm.display.update()
         e.screen.fill((255, 255, 255))
 
