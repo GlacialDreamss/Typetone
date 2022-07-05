@@ -7,9 +7,9 @@ class Game():
     def __init__(e):
         
         #Screen Definitions
-        e.screen_width, e.screen_height = 192,108
+        e.screen_width, e.screen_height = 800,600
         e.screen = pgm.display.set_mode((e.screen_width, e.screen_height))
-        e.fps = 60
+        e.fps = 1
         e.clock = pgm.time.Clock()
         e.screen.fill((255, 255, 255))       
 
@@ -21,10 +21,10 @@ class Game():
         e.mouse = pgm.mouse.get_pressed()
         e.prevMouse = e.mouse
         e.mousePos = pgm.mouse.get_pos()
+        e.prevMousePos = e.mousePos
         e.mouseMove = pgm.MOUSEMOTION
 
         e.posList = []
-        e.posListCalc = []
 
     #Main function
     def main(e):
@@ -35,16 +35,13 @@ class Game():
                 
                 e.posList.append(e.mousePos) #The position is appended to the position list
                 
-                if len(e.posList) >= 2 and e.prevMouse[0]: #If there are at least two coordinates and the mouse wasn't clicked last frame
-                    if e.posList[-2][0] < e.posList[-1][0]: #
-                        e.drawLine(e.posList[-2], e.posList[-1])
+                if e.prevMouse[0]: # Checks if mouse button held down last frame
+                    if e.mousePos[0] < e.prevMousePos[0]:
+                        e.drawLine(e.mousePos, e.prevMousePos)
                     else:
-                        e.drawLine(e.posList[-1], e.posList[-2])
-            
+                        e.drawLine(e.prevMousePos, e.mousePos)
+
             for pixel in e.posList: 
-                e.screen.set_at(pixel, (0, 0, 0))
-            
-            for pixel in e.posListCalc:
                 e.screen.set_at(pixel, (0, 0, 0))
 
     def drawLine(e, p1, p2):
@@ -61,8 +58,7 @@ class Game():
             v[1] += unit[1] # same thing but for the y-vlues, you have to do them separately
 
             rV = [int(v[0]), int(v[1])]
-            if rV not in e.posList: e.posListCalc.append(rV)
-
+            if rV not in e.posList: e.posList.append(rV)
 
     #Loop function
     def scourge(e):
@@ -76,10 +72,10 @@ class Game():
             if event == pgm.QUIT:
                 exit()
         
-
         #Values reset after every frame
-        e.mouse = pgm.mouse.get_pressed()
         e.prevMouse = e.mouse
+        e.mouse = pgm.mouse.get_pressed()
+        e.prevMousePos = e.mousePos
         e.mousePos = pgm.mouse.get_pos()
 
         e.prevKeys = e.keys
