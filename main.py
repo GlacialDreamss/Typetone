@@ -62,6 +62,11 @@ class Game():
 
     def undo(e):
         print
+        #Brainstorming how to undo
+            #Can't just remove previous points as they are already definite
+            #If saving the state of the screen after the mouse is lifted is possible then it should hopefully be simple enough
+            #Toolbar should be simple enough, use rectangles positioned from 0,0 to whatever. Getting dropdowns and the actual functions to work might be an issue
+            #Must avoid joining the flying spaghetti code monster cult :)
 
     #Loop function
     def scourge(e):
