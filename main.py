@@ -1,18 +1,20 @@
-import pygame as pgm
-from input import Input
 import math as maths
+import pygame as pgm
+import stylesheet as sty
+
+from input import Input
+
 
 class Game():
     #Constructor
     def __init__(e):
         
-        #Screen Definitions
-        e.screen_width, e.screen_height = 800,600
-        e.screen = pgm.display.set_mode((e.screen_width, e.screen_height))
+        #Screen Definitions    
+        e.screen = pgm.display.set_mode((sty.interface.screen_width, sty.interface.screen_height))
         e.fps = 30
         e.clock = pgm.time.Clock()
         e.screen.fill((255, 255, 255))
-        e.screen_state = e.screen.copy()
+        e.screen_state = e.screen
         e.prevScreen_state = e.screen_state
 
         #Keyboard Definitions
@@ -35,7 +37,6 @@ class Game():
             e.scourge()
 
             if e.mouse[0] and e.mousePos not in e.posList: #If the mouse has been clicked and the position is not in the position list
-                
                 e.posList.append(e.mousePos) #The position is appended to the position list
                 
                 if e.prevMouse[0]: # Checks if mouse button held down last frame
@@ -46,7 +47,9 @@ class Game():
                     e.screen_state = e.screen.copy
 
             for pixel in e.posList: 
-                e.screen.set_at(pixel, (0, 0, 0))
+                #e.screen.set_at(pixel, (0, 0, 0))
+                pgm.draw.circle(e.screen,(0,0,0),pixel,1)
+                
             
             #Keybinds Stuff
             if e.keys[e.kb.close]:
@@ -92,16 +95,36 @@ class Game():
             #Toolbar should be simple enough, use rectangles positioned from 0,0 to whatever. Getting dropdowns and the actual functions to work might be an issue
 
             #Must avoid joining the flying spaghetti code monster cult :)
+        #Text boxes and toolbar
+            #Main problem - they have to change size
+            #Solution - percentage based dimensions
+            #Issues - have to limit the dimensions of the program so there is no overflow (like how this line carried over)
+    
+    def toolbar(e):
+        text = pgm.font.Font.render("Deez", True, sty.colour.text_interface, sty.colour.interface)
+        
+        bar = pgm.Rect(0, 0, sty.interface.screen_width, 20)
+        pgm.draw.rect(e.screen, sty.colour.interface, bar, 1)
+
+        if bar.collidepoint(e.mousePos[0], e.mousePos[1]):
+            print("eg")
+
+    def textbox(e):
+        print
 
     #Loop function
     def scourge(e):
-        e.first = False
         e.icon = pgm.image.load("icon.png").convert()
         pgm.display.set_caption("Typetone")
         pgm.display.set_icon(e.icon)
+
         e.clock.tick(e.fps)
-        pgm.display.update()
         e.screen.fill((255, 255, 255))
+        
+        e.toolbar()
+
+        pgm.display.update()
+
 
         for event in pgm.event.get():
             if event == pgm.QUIT:
