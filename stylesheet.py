@@ -2,13 +2,13 @@ import pygame as pgm
 
 class font:
     pgm.font.init()
-    text_interface = ()
-    text_typing = pgm.font.Font("COMIC.TTF", 10)
+    text_interface = pgm.font.Font("comic.ttf", 10)
+    text_typing = ()
 
 class colour:
     interface = (100,100,100)
     brush = ()
-    text_interface = (0, 0, 0)
+    text_interface = (250, 106, 79)
     text_typing = ()
 
 class language:

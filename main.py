@@ -101,9 +101,10 @@ class Game():
             #Issues - have to limit the dimensions of the program so there is no overflow (like how this line carried over)
     
     def toolbar(e):
-        text = pgm.font.Font.render("Deez", True, sty.colour.text_interface, sty.colour.interface)
+        text = pgm.font.Font.render(sty.font.text_interface,"jiighuiedjlghbauekghbaiegthaeiuogDeez", True, sty.colour.text_interface, sty.colour.interface)
         
-        bar = pgm.Rect(0, 0, sty.interface.screen_width, 20)
+        #bar = pgm.Rect(0, 0, sty.interface.screen_width, 20)
+        bar = text.get_rect()
         pgm.draw.rect(e.screen, sty.colour.interface, bar, 1)
 
         if bar.collidepoint(e.mousePos[0], e.mousePos[1]):
@@ -119,12 +120,13 @@ class Game():
         pgm.display.set_icon(e.icon)
 
         e.clock.tick(e.fps)
-        e.screen.fill((255, 255, 255))
+        
         
         e.toolbar()
 
         pgm.display.update()
-
+        
+        e.screen.fill((255, 255, 255))
 
         for event in pgm.event.get():
             if event == pgm.QUIT:

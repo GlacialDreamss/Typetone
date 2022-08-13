@@ -1,2 +1,4 @@
 Database of unicode
 Find a way to compare them that isn't machine learning (unless it's easier)
+
+Lol no libraries exist for a reason
