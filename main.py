@@ -1,6 +1,6 @@
 import math as maths
 import pygame as pgm
-import stylesheet as sty
+import stylesheet
 
 from input import Input
 
@@ -10,7 +10,7 @@ class Game():
     def __init__(e):
         
         #Screen Definitions    
-        e.screen = pgm.display.set_mode((sty.interface.screen_width, sty.interface.screen_height))
+        e.screen = pgm.display.set_mode((stylesheet.interface.screen_width, stylesheet.interface.screen_height))
         e.fps = 30
         e.clock = pgm.time.Clock()
         e.screen.fill((255, 255, 255))
@@ -48,7 +48,7 @@ class Game():
 
             for pixel in e.posList: 
                 #e.screen.set_at(pixel, (0, 0, 0))
-                pgm.draw.circle(e.screen,(0,0,0),pixel,1)
+                pgm.draw.circle(e.screen,stylesheet.colour.brush,pixel,stylesheet.interface.brush_size)
                 
             
             #Keybinds Stuff
@@ -101,11 +101,11 @@ class Game():
             #Issues - have to limit the dimensions of the program so there is no overflow (like how this line carried over)
     
     def toolbar(e):
-        text = pgm.font.Font.render(sty.font.text_interface,"jiighuiedjlghbauekghbaiegthaeiuogDeez", True, sty.colour.text_interface, sty.colour.interface)
+        text = pgm.font.Font.render(stylesheet.font.text_interface,"jiighuiedjlghbauekghbaiegthaeiuogDeez", True, stylesheet.colour.text_interface, stylesheet.colour.interface)
         
-        #bar = pgm.Rect(0, 0, sty.interface.screen_width, 20)
+        #bar = pgm.Rect(0, 0, stylesheet.interface.screen_width, 20)
         bar = text.get_rect()
-        pgm.draw.rect(e.screen, sty.colour.interface, bar, 1)
+        pgm.draw.rect(e.screen, stylesheet.colour.interface, bar, 1)
 
         if bar.collidepoint(e.mousePos[0], e.mousePos[1]):
             print("eg")

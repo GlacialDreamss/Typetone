@@ -7,7 +7,7 @@ class font:
 
 class colour:
     interface = (100,100,100)
-    brush = ()
+    brush = (200, 70, 10)
     text_interface = (250, 106, 79)
     text_typing = ()
 
@@ -17,3 +17,4 @@ class language:
 class interface:
     screen_height = 800
     screen_width = 800
+    brush_size = 1
