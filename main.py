@@ -1,4 +1,6 @@
+from ast import Mod
 import math as maths
+from operator import mod
 import pygame as pgm
 import stylesheet
 
@@ -100,15 +102,21 @@ class Game():
             #Solution - percentage based dimensions
             #Issues - have to limit the dimensions of the program so there is no overflow (like how this line carried over)
     
-    def toolbar(e):
-        text = pgm.font.Font.render(stylesheet.font.text_interface,"jiighuiedjlghbauekghbaiegthaeiuogDeez", True, stylesheet.colour.text_interface, stylesheet.colour.interface)
-        
-        #bar = pgm.Rect(0, 0, stylesheet.interface.screen_width, 20)
-        bar = text.get_rect()
-        pgm.draw.rect(e.screen, stylesheet.colour.interface, bar, 1)
+    def toolbarSections(e):
+        num = 10 #Number of toolbar sections
+        textList = ["File", "Edit", "View", "Custom"] #List of the different sections of the toolbar
+        rectValue = stylesheet.interface.screen_width / len(textList)
+        #Make a function that collects parameters from a list and can be used in the toolbar function to print out the words for each section in the toolbar
+        print
 
-        if bar.collidepoint(e.mousePos[0], e.mousePos[1]):
-            print("eg")
+    def toolbar(e):
+        #e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (0, 0, 200, 100), 1, 10, 10, 10, 10, 10)
+        #e.screen.blit(stylesheet.font.text_interface.render("pleasework", True, stylesheet.colour.interface),(0,0))
+        for num in range(0, e.toolbarSections(num)):
+            e.rect = print
+            e.screen.blit
+
+
 
     def textbox(e):
         print
