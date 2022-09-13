@@ -102,7 +102,7 @@ class Game():
             #Solution - percentage based dimensions
             #Issues - have to limit the dimensions of the program so there is no overflow (like how this line carried over)
     
-    def toolbarSections(e):
+    def toolbarSections(num):
         num = 10 #Number of toolbar sections
         textList = ["File", "Edit", "View", "Custom"] #List of the different sections of the toolbar
         rectValue = stylesheet.interface.screen_width / len(textList)
@@ -113,8 +113,8 @@ class Game():
         #e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (0, 0, 200, 100), 1, 10, 10, 10, 10, 10)
         #e.screen.blit(stylesheet.font.text_interface.render("pleasework", True, stylesheet.colour.interface),(0,0))
         for num in range(0, e.toolbarSections(num)):
-            e.rect = print
-            e.screen.blit
+            e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (0, 0, 200, 100), 1, 10, 10, 10, 10, 10) #Make parameters increment to fill the width based on the number of toolbar sections
+            e.screen.blit(stylesheet.font.text_interface.render(e.toolbarSections(), True, stylesheet.colour.interface),(0,0)) #Don't think you can reference variables in a separate function so uh stylesheet this stuff ig. Gl
 
 
 
