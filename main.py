@@ -1,6 +1,4 @@
-from ast import Mod
 import math as maths
-from operator import mod
 import pygame as pgm
 import stylesheet
 
@@ -97,26 +95,11 @@ class Game():
             #Toolbar should be simple enough, use rectangles positioned from 0,0 to whatever. Getting dropdowns and the actual functions to work might be an issue
 
             #Must avoid joining the flying spaghetti code monster cult :)
-        #Text boxes and toolbar
-            #Main problem - they have to change size
-            #Solution - percentage based dimensions
-            #Issues - have to limit the dimensions of the program so there is no overflow (like how this line carried over)
-    
-    def toolbarSections(num):
-        num = 10 #Number of toolbar sections
-        textList = ["File", "Edit", "View", "Custom"] #List of the different sections of the toolbar
-        rectValue = stylesheet.interface.screen_width / len(textList)
-        #Make a function that collects parameters from a list and can be used in the toolbar function to print out the words for each section in the toolbar
-        print
 
     def toolbar(e):
-        #e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (0, 0, 200, 100), 1, 10, 10, 10, 10, 10)
-        #e.screen.blit(stylesheet.font.text_interface.render("pleasework", True, stylesheet.colour.interface),(0,0))
-        for num in range(0, e.toolbarSections(num)):
-            e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (0, 0, 200, 100), 1, 10, 10, 10, 10, 10) #Make parameters increment to fill the width based on the number of toolbar sections
-            e.screen.blit(stylesheet.font.text_interface.render(e.toolbarSections(), True, stylesheet.colour.interface),(0,0)) #Don't think you can reference variables in a separate function so uh stylesheet this stuff ig. Gl
-
-
+        for num in range(0, stylesheet.toolbar.section_num):
+            e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.toolbar.rect_width*num, 0, stylesheet.toolbar.rect_width, 20), 1, 0, -1, -1, -1, -1)
+            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.toolbar.section_list[num], True, stylesheet.colour.interface),((stylesheet.toolbar.rect_width*num)+80,3)) 
 
     def textbox(e):
         print

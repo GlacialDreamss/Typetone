@@ -18,3 +18,12 @@ class interface:
     screen_height = 800
     screen_width = 800
     brush_size = 1
+
+class toolbar:
+    section_list = ["File", "Edit", "View", "Custom"]
+    section_num = 4
+    rect_width = interface.screen_width/section_num
+
+class textbox:
+    section_list = ["Input","Language: "+languages[1]+"Output","Language: "+languages[1]]
+    languanges = ["zh"]
