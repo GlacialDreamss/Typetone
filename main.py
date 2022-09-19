@@ -66,7 +66,7 @@ class Game():
                     print("Redo placeholder")
                 
 
-    def drawLine(e, p1, p2): 
+    def drawLine(e, p1, p2): #Bug time: vertical lines cut, I think because the triangle formed between points is so small pixels can't be filled in. 2 If this is the case why doesn't the same happen horizontally
         x = p2[0] - p1[0] # difference in x-values
         y = p2[1] - p1[1] # difference in y-values
         
@@ -96,10 +96,12 @@ class Game():
 
             #Must avoid joining the flying spaghetti code monster cult :)
 
-    def toolbar(e):
-        for num in range(0, stylesheet.toolbar.section_num):
-            e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.toolbar.rect_width*num, 0, stylesheet.toolbar.rect_width, 20), 1, 0, -1, -1, -1, -1)
-            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.toolbar.section_list[num], True, stylesheet.colour.interface),((stylesheet.toolbar.rect_width*num)+80,3)) 
+    def ui_sections(e):
+        for num in range(0, len(stylesheet.ui_sections.toolbar_section_list)):
+            e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, 20), 1, 0, -1, -1, -1, -1)
+            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.interface),((stylesheet.ui_sections.toolbar_rect_width*num)+80,3))
+        
+        #for num in range(0,stylesheet.)
 
     def textbox(e):
         print
@@ -113,7 +115,7 @@ class Game():
         e.clock.tick(e.fps)
         
         
-        e.toolbar()
+        e.ui_sections()
 
         pgm.display.update()
         
