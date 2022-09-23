@@ -97,12 +97,19 @@ class Game():
             #Must avoid joining the flying spaghetti code monster cult :)
 
     def ui_sections(e):
-        for num in range(0, len(stylesheet.ui_sections.toolbar_section_list)):
+        for num in range(0, stylesheet.ui_sections.toolbar_section_num):
             e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, 20), 1, 0, -1, -1, -1, -1)
             e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.interface),((stylesheet.ui_sections.toolbar_rect_width*num)+80,3))
         
-        #for num in range(0,stylesheet.)
+        for num in range(0, stylesheet.ui_sections.translate_section_num):
+            e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.translate_rect_width*num, 0, stylesheet.ui_sections.translate_rect_width, 20), 1, 0, -1, -1, -1, -1)
+            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.translate_section_list[num], True, stylesheet.colour.interface),((stylesheet.ui_sections.translate_rect_width*num),3))
 
+    #def ui_sections(e, sectionListType): #Make the above stuff modular
+    #    for num in range(0, len(sectionListType)):
+    #        e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, 20), 1, 0, -1, -1, -1, -1)
+    #        e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.interface),((stylesheet.ui_sections.toolbar_rect_width*num)+80,3))
+    
     def textbox(e):
         print
 
