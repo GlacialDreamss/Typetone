@@ -11,7 +11,7 @@ class Game():
         
         #Screen Definitions    
         e.screen = pgm.display.set_mode((stylesheet.interface.screen_width, stylesheet.interface.screen_height))
-        e.fps = 30
+        e.fps = 144 #Greater fps, greater smoothness
         e.clock = pgm.time.Clock()
         e.screen.fill((255, 255, 255))
         e.screen_state = e.screen
