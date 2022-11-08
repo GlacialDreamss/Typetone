@@ -1,6 +1,7 @@
 import math as maths
 import pygame as pgm
 import stylesheet
+import tesseract
 
 from input import Input
 
@@ -11,6 +12,7 @@ class Game():
         
         #Screen Definitions    
         e.screen = pgm.display.set_mode((stylesheet.interface.screen_width, stylesheet.interface.screen_height))
+        e.image_rect = pgm.Rect(0,20,stylesheet.interface.screen_width,((stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent)-(stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent))) #Rectangle that represents the area of the screen that can be drawn on
         e.fps = 144 #Greater fps, greater smoothness
         e.clock = pgm.time.Clock()
         e.screen.fill((255, 255, 255))
@@ -35,16 +37,18 @@ class Game():
     def main(e):
         while True:
             e.scourge()
+            if stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent < e.mousePos[1] < stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent: # If in the designated area for drawing
+                if e.mouse[0] and e.mousePos not in e.posList: #If the mouse has been clicked and the position is not in the position list
+                    e.posList.append(e.mousePos) #The position is appended to the position list
+                    
+                    if e.prevMouse[0]: # Checks if mouse button held down last frame
+                        if e.mousePos[0] < e.prevMousePos[0]:
+                            e.drawLine(e.mousePos, e.prevMousePos)
+                        else:
+                            e.drawLine(e.prevMousePos, e.mousePos)
+                        e.screen_state = e.screen.copy
+                        e.screenshot() #When line is drawn screenshot is taken
 
-            if e.mouse[0] and e.mousePos not in e.posList: #If the mouse has been clicked and the position is not in the position list
-                e.posList.append(e.mousePos) #The position is appended to the position list
-                
-                if e.prevMouse[0]: # Checks if mouse button held down last frame
-                    if e.mousePos[0] < e.prevMousePos[0]:
-                        e.drawLine(e.mousePos, e.prevMousePos)
-                    else:
-                        e.drawLine(e.prevMousePos, e.mousePos)
-                    e.screen_state = e.screen.copy
 
             for pixel in e.posList: 
                 #e.screen.set_at(pixel, (0, 0, 0))
@@ -67,6 +71,7 @@ class Game():
                 
 
     def drawLine(e, p1, p2): #Bug time: vertical lines cut, I think because the triangle formed between points is so small pixels can't be filled in. 2 If this is the case why doesn't the same happen horizontally
+
         x = p2[0] - p1[0] # difference in x-values
         y = p2[1] - p1[1] # difference in y-values
         
@@ -81,6 +86,7 @@ class Game():
 
             rV = [int(v[0]), int(v[1])] 
             if rV not in e.posList: e.posList.append(rV)
+        
 
     def plans(e):
         print
@@ -97,13 +103,13 @@ class Game():
             #Must avoid joining the flying spaghetti code monster cult :)
 
     def ui_sections(e):
-        for num in range(0, stylesheet.ui_sections.toolbar_section_num):
-            e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, 20), 1, 0, -1, -1, -1, -1)
-            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.interface),((stylesheet.ui_sections.toolbar_rect_width*num)+80,3))
+        for num in range(0, stylesheet.ui_sections.toolbar_section_num): #Toolbar parameters
+            e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, (stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1) # *percent is for what percentage of the screen is used for the rectangle, hence modularity for different aspect ratios
+            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.interface),((stylesheet.ui_sections.toolbar_rect_width*num),3)) # 3 is so the text isn't overlaid on the line
         
-        for num in range(0, stylesheet.ui_sections.translate_section_num):
+        for num in range(0, stylesheet.ui_sections.translate_section_num): # Textbox parameters
             e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.translate_rect_width*num, stylesheet.interface.screen_height-(0.4*stylesheet.interface.screen_height), stylesheet.ui_sections.translate_rect_width, (0.4*stylesheet.interface.screen_height)), 1, 0, -1, -1, -1, -1)
-            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.translate_section_list[num], True, stylesheet.colour.interface),(((stylesheet.ui_sections.translate_rect_width*num)),(0.6*stylesheet.interface.screen_height)+3))
+            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.translate_section_list[num], True, stylesheet.colour.interface),(((stylesheet.ui_sections.translate_rect_width*num)),(stylesheet.ui_sections.translate_screen_percent*stylesheet.interface.screen_height)+3))
 
     #def ui_sections(e,): #Make the above stuff modular
     #    for num in range(0, len(sectionListType)):
@@ -113,10 +119,11 @@ class Game():
     def textbox(e):
         print
 
-    def screenshot(e):
-        e.image_rect = pgm.Rect(0,1,(stylesheet.interface.screen_width).,()) #The rectangle that is in between the toolbar and textbox sections
+    def screenshot(e): # Works but doesn't work, need to make it take a screenshot from the rectangle that text is blit onto 
         e.image = e.screen.subsurface(e.image_rect)
         pgm.image.save(e.image,"screenshot.png")
+        translation = tesseract.tess.text
+        print(translation)
 
     #Loop function
     def scourge(e):
