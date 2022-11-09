@@ -1,4 +1,4 @@
-from tesse import tess
+from tesset import tess
 from translate import Translator
 
 class language:

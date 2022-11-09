@@ -125,10 +125,12 @@ class Game():
     def screenshot(e): # Works but doesn't work, need to make it take a screenshot from the rectangle that text is blit onto 
         if e.prevMouse[0] and not e.mouse[0]:
             e.image = e.screen.subsurface(e.image_rect)
+
             pgm.image.save(e.image,"screenshot.png")
             image = Image.open("screenshot.png")
             text = pyt.image_to_string(image)
             image.close()
+
             print(text)
 
     #Loop function
