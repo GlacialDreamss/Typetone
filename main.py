@@ -1,7 +1,8 @@
 import math as maths
 import pygame as pgm
 import stylesheet
-import tesseract
+import pytesseract as pyt
+from PIL import Image
 
 from input import Input
 
@@ -37,18 +38,6 @@ class Game():
     def main(e):
         while True:
             e.scourge()
-            if stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent < e.mousePos[1] < stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent: # If in the designated area for drawing
-                if e.mouse[0] and e.mousePos not in e.posList: #If the mouse has been clicked and the position is not in the position list
-                    e.posList.append(e.mousePos) #The position is appended to the position list
-                    
-                    if e.prevMouse[0]: # Checks if mouse button held down last frame
-                        if e.mousePos[0] < e.prevMousePos[0]:
-                            e.drawLine(e.mousePos, e.prevMousePos)
-                        else:
-                            e.drawLine(e.prevMousePos, e.mousePos)
-                        e.screen_state = e.screen.copy
-                        e.screenshot() #When line is drawn screenshot is taken
-
 
             for pixel in e.posList: 
                 #e.screen.set_at(pixel, (0, 0, 0))
@@ -68,6 +57,20 @@ class Game():
             if e.keys[e.kb.shift]:
                 if e.keys[e.kb.undo] and not e.prevKeys[e.kb.undo]:
                     print("Redo placeholder")
+
+            if stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent < e.mousePos[1] < stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent: # If in the designated area for drawing
+                if e.mouse[0] and e.mousePos not in e.posList: #If the mouse has been clicked and the position is not in the position list
+                    e.posList.append(e.mousePos) #The position is appended to the position list
+                    
+                    if e.prevMouse[0]: # Checks if mouse button held down last frame
+                        if e.mousePos[0] < e.prevMousePos[0]:
+                            e.drawLine(e.mousePos, e.prevMousePos)
+                        else:
+                            e.drawLine(e.prevMousePos, e.mousePos)
+                        e.screen_state = e.screen.copy
+            
+            e.screenshot() #When line is drawn screenshot is taken
+
                 
 
     def drawLine(e, p1, p2): #Bug time: vertical lines cut, I think because the triangle formed between points is so small pixels can't be filled in. 2 If this is the case why doesn't the same happen horizontally
@@ -120,10 +123,13 @@ class Game():
         print
 
     def screenshot(e): # Works but doesn't work, need to make it take a screenshot from the rectangle that text is blit onto 
-        e.image = e.screen.subsurface(e.image_rect)
-        pgm.image.save(e.image,"screenshot.png")
-        translation = tesseract.tess.text
-        print(translation)
+        if e.prevMouse[0] and not e.mouse[0]:
+            e.image = e.screen.subsurface(e.image_rect)
+            pgm.image.save(e.image,"screenshot.png")
+            image = Image.open("screenshot.png")
+            text = pyt.image_to_string(image)
+            image.close()
+            print(text)
 
     #Loop function
     def scourge(e):

@@ -1,4 +1,4 @@
-from tesseract import tess
+from tesse import tess
 from translate import Translator
 
 class language:
