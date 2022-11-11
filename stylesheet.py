@@ -8,15 +8,14 @@ class font:
 class colour:
     interface = (100,100,100)
     ui = (200, 130, 140)
-    brush = (250, 165, 175)
+    brush = (0, 0, 0)
 
     text_interface = (250, 106, 79)
     text_typing = ()
 
 class language:
-    list = ["zh","en"]
-    input = 1
-    output = 2
+    input = "zh"
+    output = "en"
 
 class interface:
     screen_height = 800
@@ -29,7 +28,7 @@ class ui_sections: #How can I do modular stuff, make a loop that goes through ea
     toolbar_rect_width = interface.screen_width/toolbar_section_num
     toolbar_screen_percent = 0.022
 
-    translate_section_list = ["Input language: "+language.list[0],"Output language: "+language.list[1]]
+    translate_section_list = ["Input language: "+language.input,"Output language: "+language.output]
     translate_section_num = len(translate_section_list)
     translate_rect_width = interface.screen_width/translate_section_num
     translate_screen_percent = 0.6
