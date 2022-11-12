@@ -8,7 +8,7 @@ class font:
 class colour:
     interface = (100,100,100)
     ui = (200, 130, 140)
-    brush = (0, 0, 0)
+    brush = (250, 165, 175)
 
     text_interface = (250, 106, 79)
     text_typing = ()

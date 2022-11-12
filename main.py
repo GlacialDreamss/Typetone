@@ -14,7 +14,7 @@ class Game():
         #Screen Definitions    
         e.screen = pgm.display.set_mode((stylesheet.interface.screen_width, stylesheet.interface.screen_height))
         e.image_rect = pgm.Rect(0,20,stylesheet.interface.screen_width,((stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent)-(stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent))) #Rectangle that represents the area of the screen that can be drawn on
-        e.fps = 144 #Greater fps, greater smoothness
+        e.fps = 60 #Greater fps, greater smoothness
         e.clock = pgm.time.Clock()
         e.screen.fill((255, 255, 255))
         e.screen_state = e.screen
@@ -58,7 +58,7 @@ class Game():
                 if e.keys[e.kb.undo] and not e.prevKeys[e.kb.undo]:
                     print("Redo placeholder")
 
-            if stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent < e.mousePos[1] < stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent: # If in the designated area for drawing
+            if stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent < e.mousePos[1] < stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent: # If in the designated area for drawing``
                 if e.mouse[0] and e.mousePos not in e.posList: #If the mouse has been clicked and the position is not in the position list
                     e.posList.append(e.mousePos) #The position is appended to the position list
                     
@@ -120,7 +120,7 @@ class Game():
     #        e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, 20), 1, 0, -1, -1, -1, -1)
     #        e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.interface),((stylesheet.ui_sections.toolbar_rect_width*num)+80,3))
 
-    def screenshot(e): # Works but doesn't work, need to make it take a screenshot from the rectangle that text is blit onto 
+    def screenshot(e): 
         if e.prevMouse[0] and not e.mouse[0]:
             e.image = e.screen.subsurface(e.image_rect)
 
