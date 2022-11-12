@@ -42,23 +42,8 @@ class Game():
             for pixel in e.posList: 
                 #e.screen.set_at(pixel, (0, 0, 0))
                 pgm.draw.circle(e.screen,stylesheet.colour.brush,pixel,stylesheet.interface.brush_size)
-                
-            
-            #Keybinds Stuff
-            if e.keys[e.kb.close]:
-                exit()
-            
-            if e.keys[e.kb.ctrl]:
-                if e.keys[e.kb.undo] and not e.prevKeys[e.kb.undo]:
-                    print("Undo placeholder")
-                    print(e.screen_state.get_size())
-                    #e.screen_state.blit(e.screen,[0, 0])
 
-            if e.keys[e.kb.shift]:
-                if e.keys[e.kb.undo] and not e.prevKeys[e.kb.undo]:
-                    print("Redo placeholder")
-
-            if stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent < e.mousePos[1] < stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent: # If in the designated area for drawing``
+            if stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent < e.mousePos[1] < stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent: # If in the designated area for drawing
                 if e.mouse[0] and e.mousePos not in e.posList: #If the mouse has been clicked and the position is not in the position list
                     e.posList.append(e.mousePos) #The position is appended to the position list
                     
@@ -71,7 +56,20 @@ class Game():
             
             e.screenshot() #When line is drawn screenshot is taken
 
-                
+    def keyBinds(e):
+        #Keybinds Stuff
+        if e.keys[e.kb.close]:
+            exit()
+        
+        if e.keys[e.kb.ctrl]:
+            if e.keys[e.kb.undo] and not e.prevKeys[e.kb.undo]:
+                print("Undo placeholder")
+                print(e.screen_state.get_size())
+                #e.screen_state.blit(e.screen,[0, 0])
+
+        if e.keys[e.kb.shift]:
+            if e.keys[e.kb.undo] and not e.prevKeys[e.kb.undo]:
+                print("Redo placeholder")       
 
     def drawLine(e, p1, p2): #Bug time: vertical lines cut, I think because the triangle formed between points is so small pixels can't be filled in. 2 If this is the case why doesn't the same happen horizontally
 
@@ -137,6 +135,7 @@ class Game():
         pgm.display.set_caption("Typetone")
         pgm.display.set_icon(e.icon)
 
+        e.keyBinds()
         e.clock.tick(e.fps)
         
         

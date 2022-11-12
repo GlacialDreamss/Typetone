@@ -7,6 +7,9 @@ class font:
 
 class colour:
     interface = (100,100,100)
+    toolbar = (0, 0, 0)
+    texbox = (0, 0, 0)
+    
     ui = (200, 130, 140)
     brush = (250, 165, 175)
 
