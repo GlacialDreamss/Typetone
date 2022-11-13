@@ -7,13 +7,14 @@ class font:
 
 class colour:
     interface = (100,100,100)
+    background = (220, 220, 220)
     toolbar = (0, 0, 0)
     texbox = (0, 0, 0)
     
     ui = (200, 130, 140)
     brush = (250, 165, 175)
 
-    text_interface = (250, 106, 79)
+    text_interface = (0, 0, 0)
     text_typing = ()
 
 class language:

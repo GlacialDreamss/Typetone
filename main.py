@@ -16,7 +16,7 @@ class Game():
         e.image_rect = pgm.Rect(0,20,stylesheet.interface.screen_width,((stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent)-(stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent))) #Rectangle that represents the area of the screen that can be drawn on
         e.fps = 60 #Greater fps, greater smoothness
         e.clock = pgm.time.Clock()
-        e.screen.fill((255, 255, 255))
+        e.screen.fill(stylesheet.colour.background)
         e.screen_state = e.screen
         e.prevScreen_state = e.screen_state
 
@@ -54,7 +54,7 @@ class Game():
                             e.drawLine(e.prevMousePos, e.mousePos)
                         e.screen_state = e.screen.copy
             
-            e.screenshot() #When line is drawn screenshot is taken
+                e.screenshot() #When line is drawn screenshot is taken
 
     def keyBinds(e):
         #Keybinds Stuff
@@ -71,10 +71,13 @@ class Game():
             if e.keys[e.kb.undo] and not e.prevKeys[e.kb.undo]:
                 print("Redo placeholder")       
 
-    def drawLine(e, p1, p2): #Bug time: vertical lines cut, I think because the triangle formed between points is so small pixels can't be filled in. 2 If this is the case why doesn't the same happen horizontally
+    def drawLine(e, p1, p2): #Bug time: vertical lines cut, I think because the triangle formed between points is so small pixels can't be filled in. 2 If this is the case why doesn't the same happen horizontally 3 Defo here, doesn't make sense to be anywhere else
 
         x = p2[0] - p1[0] # difference in x-values
         y = p2[1] - p1[1] # difference in y-values
+        #if x < 0:
+        #    y = 1
+        
         
         hyp = maths.sqrt((x*x)+(y*y)) # pythagoras thorem to calculate distance between two points
         unit = [(x/hyp),(y/hyp)] # unit vector (vector divided by magnitude of vector)
@@ -105,13 +108,14 @@ class Game():
     def ui_sections(e):
         for num in range(0, stylesheet.ui_sections.toolbar_section_num): #Toolbar parameters
             e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, (stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1) # *percent is for what percentage of the screen is used for the rectangle, hence modularity for different aspect ratios
-            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.interface),((stylesheet.ui_sections.toolbar_rect_width*num),3)) # 3 is so the text isn't overlaid on the line
+            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.text_interface),((stylesheet.ui_sections.toolbar_rect_width*num),3)) # 3 is so the text isn't overlaid on the line
         
         for num in range(0, stylesheet.ui_sections.translate_section_num): # Textbox parameters
             e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.translate_rect_width*num, stylesheet.interface.screen_height-(0.4*stylesheet.interface.screen_height), stylesheet.ui_sections.translate_rect_width, (0.4*stylesheet.interface.screen_height)), 1, 0, -1, -1, -1, -1)
-            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.translate_section_list[num], True, stylesheet.colour.interface),(((stylesheet.ui_sections.translate_rect_width*num)),(stylesheet.ui_sections.translate_screen_percent*stylesheet.interface.screen_height)+3))
+            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.translate_section_list[num], True, stylesheet.colour.text_interface),(((stylesheet.ui_sections.translate_rect_width*num)),(stylesheet.ui_sections.translate_screen_percent*stylesheet.interface.screen_height)+3))
 
-
+    def dropdown(e):
+        print
     #def ui_sections(e,): #Make the above stuff modular
     #    for num in range(0, len(sectionListType)):
     #        e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, 20), 1, 0, -1, -1, -1, -1)
@@ -142,7 +146,7 @@ class Game():
 
         pgm.display.update()
         
-        e.screen.fill((255, 255, 255))
+        e.screen.fill(stylesheet.colour.background)
 
         for event in pgm.event.get():
             if event == pgm.QUIT:
