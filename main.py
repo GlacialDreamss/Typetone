@@ -107,12 +107,18 @@ class Game():
 
     def ui_sections(e):
         for num in range(0, stylesheet.ui_sections.toolbar_section_num): #Toolbar parameters
-            e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, (stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1) # *percent is for what percentage of the screen is used for the rectangle, hence modularity for different aspect ratios
-            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.text_interface),((stylesheet.ui_sections.toolbar_rect_width*num),3)) # 3 is so the text isn't overlaid on the line
+            e.draw_rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, (stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1) # *percent is for what percentage of the screen is used for the rectangle, hence modularity for different aspect ratios
+            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.text_interface),((stylesheet.ui_sections.toolbar_rect_width*num+200),0)) # 200 is the x coord in a tuple so the text isn't overlaid on the left part of the rect
+            for num2 in range(0, stylesheet.ui_sections.toolbar_dropdown_listnum[num]):
+                pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent*(num2+1), stylesheet.ui_sections.toolbar_rect_width, (stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1)
+                e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.text_interface),((stylesheet.ui_sections.toolbar_rect_width*num+200),0)) 
+
+                
         
         for num in range(0, stylesheet.ui_sections.translate_section_num): # Textbox parameters
-            e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.translate_rect_width*num, stylesheet.interface.screen_height-(0.4*stylesheet.interface.screen_height), stylesheet.ui_sections.translate_rect_width, (0.4*stylesheet.interface.screen_height)), 1, 0, -1, -1, -1, -1)
+            e.draw_rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.translate_rect_width*num, stylesheet.interface.screen_height-(0.4*stylesheet.interface.screen_height), stylesheet.ui_sections.translate_rect_width, (0.4*stylesheet.interface.screen_height)), 1, 0, -1, -1, -1, -1)
             e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.translate_section_list[num], True, stylesheet.colour.text_interface),(((stylesheet.ui_sections.translate_rect_width*num)),(stylesheet.ui_sections.translate_screen_percent*stylesheet.interface.screen_height)+3))
+            pgm.draw.rect
 
     def dropdown(e):
         print
