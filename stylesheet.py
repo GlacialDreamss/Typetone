@@ -18,8 +18,8 @@ class colour:
     text_typing = ()
 
 class language:
-    input = "zh"
-    output = "en"
+    input = "en"
+    output = "zh"
 
 class interface:
     screen_height = 800

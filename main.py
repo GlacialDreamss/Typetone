@@ -3,6 +3,7 @@ import pygame as pgm
 import stylesheet
 import pytesseract as pyt
 from PIL import Image
+import pretty_errors
 
 from input import Input
 
@@ -111,7 +112,7 @@ class Game():
             e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.text_interface),((stylesheet.ui_sections.toolbar_rect_width*num+200),0)) # 200 is the x coord in a tuple so the text isn't overlaid on the left part of the rect
             for num2 in range(0, stylesheet.ui_sections.toolbar_dropdown_listnum[num]):
                 pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent*(num2+1), stylesheet.ui_sections.toolbar_rect_width, (stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1)
-                e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.text_interface),((stylesheet.ui_sections.toolbar_rect_width*num+200),0)) 
+                #e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_dropdown_list[num], True, stylesheet.colour.text_interface),((stylesheet.ui_sections.toolbar_rect_width*num+200),0)) 
 
                 
         
