@@ -1,23 +1,22 @@
 import math as maths
 import pygame as pgm
-import stylesheet
 import pytesseract as pyt
 from PIL import Image
 import pretty_errors
 
 from input import Input
-
+from stylesheet import *
 
 class Game():
     #Constructor
     def __init__(e):
         
         #Screen Definitions    
-        e.screen = pgm.display.set_mode((stylesheet.interface.screen_width, stylesheet.interface.screen_height))
-        e.image_rect = pgm.Rect(0,20,stylesheet.interface.screen_width,((stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent)-(stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent))) #Rectangle that represents the area of the screen that can be drawn on
+        e.screen = pgm.display.set_mode((interface.screen_width, interface.screen_height))
+        e.image_rect = pgm.Rect(0,20,interface.screen_width,((interface.screen_height*ui_sections.translate_screen_percent)-(interface.screen_height*ui_sections.toolbar_screen_percent))) #Rectangle that represents the area of the screen that can be drawn on
         e.fps = 60 #Greater fps, greater smoothness
         e.clock = pgm.time.Clock()
-        e.screen.fill(stylesheet.colour.background)
+        e.screen.fill(colour.background)
         e.screen_state = e.screen
         e.prevScreen_state = e.screen_state
 
@@ -42,9 +41,9 @@ class Game():
 
             for pixel in e.posList: 
                 #e.screen.set_at(pixel, (0, 0, 0))
-                pgm.draw.circle(e.screen,stylesheet.colour.brush,pixel,stylesheet.interface.brush_size)
+                pgm.draw.circle(e.screen,colour.brush,pixel,interface.brush_size)
 
-            if stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent < e.mousePos[1] < stylesheet.interface.screen_height*stylesheet.ui_sections.translate_screen_percent: # If in the designated area for drawing
+            if interface.screen_height*ui_sections.toolbar_screen_percent < e.mousePos[1] < interface.screen_height*ui_sections.translate_screen_percent: # If in the designated area for drawing
                 if e.mouse[0] and e.mousePos not in e.posList: #If the mouse has been clicked and the position is not in the position list
                     e.posList.append(e.mousePos) #The position is appended to the position list
                     
@@ -107,26 +106,26 @@ class Game():
             #Must avoid joining the flying spaghetti code monster cult :)
 
     def ui_sections(e):
-        for num in range(0, stylesheet.ui_sections.toolbar_section_num): #Toolbar parameters
-            e.draw_rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, (stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1) # *percent is for what percentage of the screen is used for the rectangle, hence modularity for different aspect ratios
-            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.text_interface),((stylesheet.ui_sections.toolbar_rect_width*num+200),0)) # 200 is the x coord in a tuple so the text isn't overlaid on the left part of the rect
-            for num2 in range(0, stylesheet.ui_sections.toolbar_dropdown_listnum[num]):
-                pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent*(num2+1), stylesheet.ui_sections.toolbar_rect_width, (stylesheet.interface.screen_height*stylesheet.ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1)
-                #e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_dropdown_list[num], True, stylesheet.colour.text_interface),((stylesheet.ui_sections.toolbar_rect_width*num+200),0)) 
+        for num in range(0, ui_sections.toolbar_section_num): #Toolbar parameters
+            e.draw_rect = pgm.draw.rect(e.screen, colour.interface, (ui_sections.toolbar_rect_width*num, 0, ui_sections.toolbar_rect_width, (interface.screen_height*ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1) # *percent is for what percentage of the screen is used for the rectangle, hence modularity for different aspect ratios
+            e.screen.blit(font.text_interface.render(ui_sections.toolbar_section_list[num], True, colour.text_interface),((ui_sections.toolbar_rect_width*num+200),0)) # 200 is the x coord in a tuple so the text isn't overlaid on the left part of the rect
+            for num2 in range(0, ui_sections.toolbar_dropdown_listnum[num]):
+                pgm.draw.rect(e.screen, colour.interface, (ui_sections.toolbar_rect_width*num, interface.screen_height*ui_sections.toolbar_screen_percent*(num2+1), ui_sections.toolbar_rect_width, (interface.screen_height*ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1)
+                #e.screen.blit(font.text_interface.render(ui_sections.toolbar_dropdown_list[num], True, colour.text_interface),((ui_sections.toolbar_rect_width*num+200),0)) 
 
                 
         
-        for num in range(0, stylesheet.ui_sections.translate_section_num): # Textbox parameters
-            e.draw_rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.translate_rect_width*num, stylesheet.interface.screen_height-(0.4*stylesheet.interface.screen_height), stylesheet.ui_sections.translate_rect_width, (0.4*stylesheet.interface.screen_height)), 1, 0, -1, -1, -1, -1)
-            e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.translate_section_list[num], True, stylesheet.colour.text_interface),(((stylesheet.ui_sections.translate_rect_width*num)),(stylesheet.ui_sections.translate_screen_percent*stylesheet.interface.screen_height)+3))
+        for num in range(0, ui_sections.translate_section_num): # Textbox parameters
+            e.draw_rect = pgm.draw.rect(e.screen, colour.interface, (ui_sections.translate_rect_width*num, interface.screen_height-(0.4*interface.screen_height), ui_sections.translate_rect_width, (0.4*interface.screen_height)), 1, 0, -1, -1, -1, -1)
+            e.screen.blit(font.text_interface.render(ui_sections.translate_section_list[num], True, colour.text_interface),(((ui_sections.translate_rect_width*num)),(ui_sections.translate_screen_percent*interface.screen_height)+3))
             pgm.draw.rect
 
     def dropdown(e):
         print
     #def ui_sections(e,): #Make the above stuff modular
     #    for num in range(0, len(sectionListType)):
-    #        e.rect = pgm.draw.rect(e.screen, stylesheet.colour.interface, (stylesheet.ui_sections.toolbar_rect_width*num, 0, stylesheet.ui_sections.toolbar_rect_width, 20), 1, 0, -1, -1, -1, -1)
-    #        e.screen.blit(stylesheet.font.text_interface.render(stylesheet.ui_sections.toolbar_section_list[num], True, stylesheet.colour.interface),((stylesheet.ui_sections.toolbar_rect_width*num)+80,3))
+    #        e.rect = pgm.draw.rect(e.screen, colour.interface, (ui_sections.toolbar_rect_width*num, 0, ui_sections.toolbar_rect_width, 20), 1, 0, -1, -1, -1, -1)
+    #        e.screen.blit(font.text_interface.render(ui_sections.toolbar_section_list[num], True, colour.interface),((ui_sections.toolbar_rect_width*num)+80,3))
 
     def screenshot(e): 
         if e.prevMouse[0] and not e.mouse[0]:
@@ -153,7 +152,7 @@ class Game():
 
         pgm.display.update()
         
-        e.screen.fill(stylesheet.colour.background)
+        e.screen.fill(colour.background)
 
         for event in pgm.event.get():
             if event == pgm.QUIT:
