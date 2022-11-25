@@ -111,9 +111,7 @@ class Game():
             e.screen.blit(font.text_interface.render(ui_sections.toolbar_section_list[num], True, colour.text_interface),((ui_sections.toolbar_rect_width*num+200),0)) # 200 is the x coord in a tuple so the text isn't overlaid on the left part of the rect
             for num2 in range(0, ui_sections.toolbar_dropdown_listnum[num]):
                 pgm.draw.rect(e.screen, colour.interface, (ui_sections.toolbar_rect_width*num, interface.screen_height*ui_sections.toolbar_screen_percent*(num2+1), ui_sections.toolbar_rect_width, (interface.screen_height*ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1)
-                #e.screen.blit(font.text_interface.render(ui_sections.toolbar_dropdown_list[num], True, colour.text_interface),((ui_sections.toolbar_rect_width*num+200),0)) 
-
-                
+                #e.screen.blit(font.text_interface.render(ui_sections.toolbar_dropdown_list[num], True, colour.text_interface),((ui_sections.toolbar_rect_width*num+200),0))       
         
         for num in range(0, ui_sections.translate_section_num): # Textbox parameters
             e.draw_rect = pgm.draw.rect(e.screen, colour.interface, (ui_sections.translate_rect_width*num, interface.screen_height-(0.4*interface.screen_height), ui_sections.translate_rect_width, (0.4*interface.screen_height)), 1, 0, -1, -1, -1, -1)
