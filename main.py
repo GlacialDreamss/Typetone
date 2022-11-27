@@ -2,10 +2,10 @@ import math as maths
 import pygame as pgm
 import pytesseract as pyt
 from PIL import Image
-import pretty_errors
 
 from input import Input
 from stylesheet import *
+from translation import translation
 
 class Game():
     #Constructor
@@ -132,6 +132,7 @@ class Game():
             pgm.image.save(e.image,"screenshot.png")
             image = Image.open("screenshot.png")
             text = pyt.image_to_string(image)
+            translation.lang_in = text
             image.close()
 
             print(text)
