@@ -2,7 +2,7 @@ import pygame as pgm
 
 class font:
     pgm.font.init()
-    text_interface = pgm.font.Font("comic.ttf", 10)
+    text_interface = pgm.font.Font("comic.ttf", 20)
     text_typing = ()
 
 class colour:

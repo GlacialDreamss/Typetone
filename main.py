@@ -43,7 +43,7 @@ class Game():
                 #e.screen.set_at(pixel, (0, 0, 0))
                 pgm.draw.circle(e.screen,colour.brush,pixel,interface.brush_size)
 
-            if interface.screen_height*ui_sections.toolbar_screen_percent < e.mousePos[1] < interface.screen_height*ui_sections.translate_screen_percent: # If in the designated area for drawing
+            if e.mousePos[1] < interface.screen_height*ui_sections.translate_screen_percent: # If in the designated area for drawing (left is second toolbar condition) '''interface.screen_height*ui_sections.toolbar_screen_percent <'''
                 if e.mouse[0] and e.mousePos not in e.posList: #If the mouse has been clicked and the position is not in the position list
                     e.posList.append(e.mousePos) #The position is appended to the position list
                     
@@ -106,18 +106,18 @@ class Game():
             #Must avoid joining the flying spaghetti code monster cult :)
 
     def ui_sections(e):
-        for num in range(0, ui_sections.toolbar_section_num): #Toolbar parameters
-            e.draw_rect = pgm.draw.rect(e.screen, colour.interface, (ui_sections.toolbar_rect_width*num, 0, ui_sections.toolbar_rect_width, (interface.screen_height*ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1) # *percent is for what percentage of the screen is used for the rectangle, hence modularity for different aspect ratios
-            e.screen.blit(font.text_interface.render(ui_sections.toolbar_section_list[num], True, colour.text_interface),((ui_sections.toolbar_rect_width*num+200),0)) # 200 is the x coord in a tuple so the text isn't overlaid on the left part of the rect
-            for num2 in range(0, ui_sections.toolbar_dropdown_listnum[num]):
-                pgm.draw.rect(e.screen, colour.interface, (ui_sections.toolbar_rect_width*num, interface.screen_height*ui_sections.toolbar_screen_percent*(num2+1), ui_sections.toolbar_rect_width, (interface.screen_height*ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1)
-                #e.screen.blit(font.text_interface.render(ui_sections.toolbar_dropdown_list[num], True, colour.text_interface),((ui_sections.toolbar_rect_width*num+200),0))       
+        # for num in range(0, ui_sections.toolbar_section_num): #Toolbar parameters
+        #     e.draw_rect = pgm.draw.rect(e.screen, colour.interface, (ui_sections.toolbar_rect_width*num, 0, ui_sections.toolbar_rect_width, (interface.screen_height*ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1) # *percent is for what percentage of the screen is used for the rectangle, hence modularity for different aspect ratios
+        #     e.screen.blit(font.text_interface.render(ui_sections.toolbar_section_list[num], True, colour.text_interface),((ui_sections.toolbar_rect_width*num+200),0)) # 200 is the x coord in a tuple so the text isn't overlaid on the left part of the rect
+        #     for num2 in range(0, ui_sections.toolbar_dropdown_listnum[num]):
+        #         pgm.draw.rect(e.screen, colour.interface, (ui_sections.toolbar_rect_width*num, interface.screen_height*ui_sections.toolbar_screen_percent*(num2+1), ui_sections.toolbar_rect_width, (interface.screen_height*ui_sections.toolbar_screen_percent)), 1, 0, -1, -1, -1, -1)
+        #         #e.screen.blit(font.text_interface.render(ui_sections.toolbar_dropdown_list[num], True, colour.text_interface),((ui_sections.toolbar_rect_width*num+200),0))
         
         for num in range(0, ui_sections.translate_section_num): # Textbox parameters
             e.draw_rect = pgm.draw.rect(e.screen, colour.interface, (ui_sections.translate_rect_width*num, interface.screen_height-(0.4*interface.screen_height), ui_sections.translate_rect_width, (0.4*interface.screen_height)), 1, 0, -1, -1, -1, -1)
             e.screen.blit(font.text_interface.render(ui_sections.translate_section_list[num], True, colour.text_interface),(((ui_sections.translate_rect_width*num)),(ui_sections.translate_screen_percent*interface.screen_height)+3))
             pgm.draw.rect
-
+    
     def dropdown(e):
         print
     #def ui_sections(e,): #Make the above stuff modular
