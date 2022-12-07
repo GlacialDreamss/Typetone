@@ -12,7 +12,7 @@ def paint(e):
         pic = QPixmap("icon.png")
         painter.drawPixmap(e.rect(), pic)
         colour = QColor
-        colour.setRed()
+        colour.setRed() #Where I stopped, assigning values for all 3 in rgb
         painter.setPen(colour)
         painter.drawRect(40, 40, 400, 200)
 
