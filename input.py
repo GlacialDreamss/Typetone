@@ -7,5 +7,3 @@ class Input():
         e.ctrl= pgm.K_LCTRL
         e.shift = pgm.K_LSHIFT
         e.undo = pgm.K_z
-
-

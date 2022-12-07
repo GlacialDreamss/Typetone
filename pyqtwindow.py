@@ -12,9 +12,9 @@ def paint(e):
         pic = QPixmap("icon.png")
         painter.drawPixmap(e.rect(), pic)
         colour = QColor
-        colour.setRed() #Where I stopped, assigning values for all 3 in rgb
-        painter.setPen(colour)
-        painter.drawRect(40, 40, 400, 200)
+        # colour.setRed() #Where I stopped, assigning values for all 3 in rgb
+        # painter.setPen(colour)
+        # painter.drawRect(40, 40, 400, 200)
 
 class Window(QWidget):
     def __init__(e):
@@ -37,10 +37,23 @@ class Window(QWidget):
             
             toolbar_section.addSeparator
 
-        # add textbox
-        # tbox = QPlainTextEdit()
-        # layout.addWidget(tbox, 1, 0)
-        # layout.addWidget(tbox, 1, 1)
+        # add labels 
+
+        # add textboxes
+        for num in range(2,5):
+            layout.addWidget(QPlainTextEdit(), num, 1)
+            if num == 4: break
+            layout.addWidget(QPlainTextEdit(), num, 0)    
+        
+        # add buttons for text to speech
+        label = QLabel()
+        label2 = QLabel()
+        label.setText("Input")
+        label2.setText("Output")        
+        layout.addWidget(label, 1, 0)
+        layout.addWidget(label2, 1, 1)        
+        
+        # Somehow do interface
         paint(e)
 
 
