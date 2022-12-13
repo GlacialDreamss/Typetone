@@ -17,6 +17,7 @@ class Window(QWidget):
         e.setGeometry(10, 150, screen_width, screen_height)
         e.setWindowIcon(QIcon("icon.png"))
 
+        #Program needs to be able to show the screen (bottom of file) and update the file based on the screen (infinite loop). The issue is being able to access attributes as they are currently in the init which I did by trying to put the stuff below in a main method. This results in methods being uncallable in the main method.
 
         # create menu
         menubar = QMenuBar()
@@ -28,17 +29,17 @@ class Window(QWidget):
                 toolbar_section.addAction(ui_sections.toolbar_dropdown_list[num][num2])
             
             toolbar_section.addSeparator
-
+    
         # add labels 
         text = QPlainTextEdit()
         text2 = QPlainTextEdit()
+
         # add textboxes
         for num in range(2,5):
             e.layout.addWidget(text, num, 1)
             if num == 4: break
             e.layout.addWidget(text2, num, 0)
         
-        print(text.toPlainText())
         
         # add buttons for text to speech
         label = QLabel()
@@ -51,12 +52,12 @@ class Window(QWidget):
         # Somehow do interface
     
     def paint(e):
-        painter = QPainter(e)
-        pic = QPixmap("icon.png")
-        painter.drawPixmap(e.rect(), pic)
-        colour = QColor
+        e.painter = QPainter(e)
+        e.pic = QPixmap("icon.png")
+        e.painter.drawPixmap(e.rect(), e.pic)
+        e.colour = QColor
         # colour.setRed() #Where I stopped, assigning values for all 3 in rgb
-        # painter.setPen(colour)
+        # painter.setPen(e.colour)
         # painter.drawRect(40, 40, 400, 200)
 
 
@@ -64,3 +65,5 @@ app = QApplication(sys.argv)
 screen = Window()
 screen.show()
 sys.exit(app.exec())
+# Window().main()
+#     print(Window.main(e.text))
