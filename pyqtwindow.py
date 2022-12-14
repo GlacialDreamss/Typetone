@@ -5,6 +5,11 @@ from PyQt6.QtGui import *
 import sys
 
 from stylesheet import *
+from translation import *
+from recognition import tess
+from translate import Translator
+import pretty_errors
+
 
 class Window(QWidget):
     def __init__(e):
@@ -17,7 +22,7 @@ class Window(QWidget):
         e.setGeometry(10, 150, screen_width, screen_height)
         e.setWindowIcon(QIcon("icon.png"))
 
-        #Program needs to be able to show the screen (bottom of file) and update the file based on the screen (infinite loop). The issue is being able to access attributes as they are currently in the init which I did by trying to put the stuff below in a main method. This results in methods being uncallable in the main method.
+        #Program needs to be able to show the screen (bottom of file) and update the file based on the screen (infinite loop). The issue is being able to access attributes as they are currently in the init which I did by trying to put the stuff below in a main method. This results in methods being uncallable in the main method. Do not remove QWidget from the Window() as there is no widget object being used (it would have to be used in the statements but I can't do that because it doesn't apply to the main screen)
 
         # create menu
         menubar = QMenuBar()
@@ -30,26 +35,58 @@ class Window(QWidget):
             
             toolbar_section.addSeparator
     
-        # add labels 
-        text = QPlainTextEdit()
-        text2 = QPlainTextEdit()
+        # Widget Definition ----------------------------------------------------------------------------------- #
+        e.input_image_drawing = QPixmap()  
 
-        # add textboxes
-        for num in range(2,5):
-            e.layout.addWidget(text, num, 1)
-            if num == 4: break
-            e.layout.addWidget(text2, num, 0)
+        e.title_label_input = QLabel()
+        e.title_label_output = QLabel()
+
+        e.input_textbox_text = QLineEdit()
+        e.output_label_text = QLabel()
+        e.output_label_drawing = QLabel()
+        e.output_label_import = QLabel()
         
+        e.output_button_text_tts = QPushButton()
+        e.output_button_drawing_tts = QPushButton()
+        e.output_button_import_tts = QPushButton()
+
+        e.input_dropdown_text = QComboBox()
+        e.output_dropdown_text = QComboBox()
+        e.output_dropdown_drawing = QComboBox()
+        e.output_dropdown_import = QComboBox()
+
+        # Widgets added to screen ----------------------------------------------------------------------------------- #
+        # e.layout.addWidget()
+
+        e.layout.addWidget(e.title_label_input, 2, 0)
+        e.layout.addWidget(e.title_label_output, 2, 1)   
+       
+        e.layout.addWidget(e.input_textbox_text, 3, 0)
+        e.layout.addWidget(e.output_label_text, 3, 1)
+        e.layout.addWidget(e.output_label_drawing, 4, 1)
+        e.layout.addWidget(e.output_label_import, 5, 1)
+
+        e.layout.addWidget(e.output_button_text_tts, 3, 3)
+        e.layout.addWidget(e.output_button_drawing_tts, 4, 3)
+        e.layout.addWidget(e.output_button_import_tts, 5, 3)
+
+        e.layout.addWidget(e.input_dropdown_text, 2, 2)
+        e.layout.addWidget(e.output_dropdown_text, 3, 2)
+        e.layout.addWidget(e.output_dropdown_drawing, 4, 2)
+        e.layout.addWidget(e.output_dropdown_import, 5, 2)
+
+        # Widget Characterisation ----------------------------------------------------------------------------------- #
+        e.title_label_input.setText("Input")
+        e.title_label_output.setText("Output") 
+
+        e.input_textbox_text.editingFinished.connect(e.translateUserText)     
         
-        # add buttons for text to speech
-        label = QLabel()
-        label2 = QLabel()
-        label.setText("Input")
-        label2.setText("Output")        
-        e.layout.addWidget(label, 1, 0)
-        e.layout.addWidget(label2, 1, 1)        
-        
-        # Somehow do interface
+
+        # Translation Vatiables ----------------------------------------------------------------------------------- #
+        e.lang_in = language.input
+        e.lang_out = language.output
+
+        e.translator = Translator(to_lang=e.lang_out)  
     
     def paint(e):
         e.painter = QPainter(e)
@@ -60,10 +97,14 @@ class Window(QWidget):
         # painter.setPen(e.colour)
         # painter.drawRect(40, 40, 400, 200)
 
+    def translateUserText(e):
+        e.output_label_text.setText(e.translator.translate(e.input_textbox_text.text())) # Translates text in the textbox and adds it to label
+    def translateUserImport(e):
+        print
+    def texttospeech(e):
+        print
 
 app = QApplication(sys.argv)
 screen = Window()
 screen.show()
 sys.exit(app.exec())
-# Window().main()
-#     print(Window.main(e.text))
