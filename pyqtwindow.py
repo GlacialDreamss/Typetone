@@ -107,17 +107,10 @@ class Window(QWidget):
         e.output_dropdown_import.addItems(language.lang_list)
         
         # Calling custom methods ----------------------------------------------------------------------------------- #
-        e.output_dropdown_text.currentIndexChanged.connect(e.getDropdownItem)
         e.input_textbox_text.editingFinished.connect(e.translateUserText)
         #e.menubar.triggered(ui_sections.toolbar_dropdown_list[num][num2]).connect(e.translateUserImport)
         
         e.output_button_text_tts.pressed.connect(e.textToSpeech_text)
-
-        # Translation Vatiables ----------------------------------------------------------------------------------- #
-        e.lang_in = language.input
-        e.lang_out = language.output
-
-        e.translator = Translator(to_lang=e.lang_out)  
     
     def paint(e):
         e.painter = QPainter(e)
@@ -128,14 +121,25 @@ class Window(QWidget):
         # painter.setPen(e.colour)
         # painter.drawRect(40, 40, 400, 200)
 
-    def getDropdownItem(e):
-        print(e.output_dropdown_import.currentText())
-
     def translateUserText(e):
+        # Work out which langauges are supported for translation, change the list
+        e.lang_in = e.input_dropdown_text.currentText()
+        e.lang_out = e.output_dropdown_text.currentText()
+        e.translator = Translator(to_lang=e.lang_out,from_lang=e.lang_in)
+
         e.output_label_text.setText(e.translator.translate(e.input_textbox_text.text())) # Translates text in the textbox and adds it to label
     
     def translateUserImport(e):
+        e.lang_in = e.input_dropdown_import.currentText()
+        e.lang_out = e.output_dropdown_import.currentText()
+        e.translator = Translator(to_lang=e.lang_out,from_lang=e.lang_in)
+
         QFileDialog.getOpenFileName()
+
+    def translateUserDrawing(e):
+        e.lang_in = e.input_dropdown_drawing.currentText()
+        e.lang_out = e.output_dropdown_drawing.currentText()
+        e.translator = Translator(to_lang=e.lang_out,from_lang=e.lang_in) 
     
     def textToSpeech_text(e):
         e.tts = gTTS(e.translator.translate(e.input_textbox_text.text()))
