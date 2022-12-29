@@ -7,11 +7,13 @@ import sys
 import os
 
 from stylesheet import *
-from recognition import tess
 from translate import Translator
-import pretty_errors
 from gtts import gTTS
-
+from PIL import Image
+import pretty_errors
+import pytesseract
+import playsound
+import pygame
 
 class Window(QWidget):
     def __init__(e):
@@ -25,28 +27,24 @@ class Window(QWidget):
         # e.setGeometry(10, 150, screen_width, screen_height)
         e.setWindowIcon(QIcon("icon.png"))
 
-        # create top menu
-        e.menubar = QMenuBar()
-        e.layout.addWidget(e.menubar, 0, 0)
-        for num in range(0, len(ui_sections.toolbar_section_list)):
-            toolbar_section = e.menubar.addMenu(ui_sections.toolbar_section_list[num])
-            
-            for num2 in range(0, len(ui_sections.toolbar_dropdown_list[num])): 
-                toolbar_section.addAction(ui_sections.toolbar_dropdown_list[num][num2])
-
         # Widget Definition ----------------------------------------------------------------------------------- #
-        e.input_image_drawing = QPixmap()  
-
+        e.menubar = QMenuBar()
+        
         e.title_label_input = QLabel()
         e.title_label_output = QLabel()
         e.title_label_input_dropdown = QLabel()
         e.title_label_output_dropdown = QLabel()
         e.title_label_buttons = QLabel()
 
-        e.input_textbox_text = QLineEdit()
+        e.title_label_format = QLabel()
+        e.title_label_drawing = QLabel()
+        e.title_label_import = QLabel()
+        e.title_label_text = QLabel()
 
-        e.input_label_drawing = QLabel()
+        e.input_textbox_text = QLineEdit()
         e.input_label_import = QLabel()
+        e.input_label_drawing = QLabel()
+
         e.output_label_text = QLabel()
         e.output_label_drawing = QLabel()
         e.output_label_import = QLabel()
@@ -62,69 +60,188 @@ class Window(QWidget):
         e.output_dropdown_drawing = QComboBox()
         e.output_dropdown_import = QComboBox()
 
+        e.drawing_pixmap = QPixmap("transparent.png")
+        e.drawing_label = QLabel()
+
+        # Drawing Attributes ----------------------------------------------------------------------------------- #
+        # creating image object
+        
+        e.image = QImage(e.drawing_pixmap.size(), QImage.Format.Format_RGB32)
+        e.drawing_label.setPixmap(e.drawing_pixmap)
+        
+
+        # drawing flag
+        e.drawing = False
+        # default brush size
+        e.brushSize = 2
+        # default color
+        e.brushColor = qRgb(0,0,0)
+        # Default background
+        e.backgroundColour = qRgb(255, 255, 255)
+        e.image.fill(e.backgroundColour)
+
+        # QPoint object to tract the point
+        e.lastPoint = QPoint()
+        
+        # Brush size slider
+        e.slider = QSlider(Qt.Orientation.Horizontal, e)
+        e.slider.setGeometry(50,50, 200, 50)
+        e.slider.setMinimum(0)
+        e.slider.setMaximum(30)
+        e.slider.setTickPosition(QSlider.TickPosition.TicksBelow)
+        e.slider.setTickInterval(2)
+        
+
         # Widgets added to screen ----------------------------------------------------------------------------------- #
-        # e.layout.addWidget()
+        e.layout.addWidget(e.menubar, 0, 0)
 
-        e.layout.addWidget(e.title_label_input, 2, 0)
-        e.layout.addWidget(e.title_label_output, 2, 4)
-        e.layout.addWidget(e.title_label_input_dropdown, 2, 1)
-        e.layout.addWidget(e.title_label_output_dropdown, 2, 3)
-        e.layout.addWidget(e.title_label_buttons, 2, 5)
-       
-        e.layout.addWidget(e.input_textbox_text, 3, 1)
+        e.layout.addWidget(e.title_label_format, 1, 0)
+        e.layout.addWidget(e.title_label_input_dropdown, 1, 1)
+        e.layout.addWidget(e.title_label_input, 1, 2)
+        e.layout.addWidget(e.title_label_output, 1, 3)
+        e.layout.addWidget(e.title_label_output_dropdown, 1, 4)
+        e.layout.addWidget(e.title_label_buttons, 1, 5)
 
-        e.layout.addWidget(e.input_label_drawing, 4, 1)
-        e.layout.addWidget(e.input_label_import, 5, 1)
-        e.layout.addWidget(e.output_label_text, 3, 3)
-        e.layout.addWidget(e.output_label_drawing, 4, 3)
-        e.layout.addWidget(e.output_label_import, 5, 3)
+        e.layout.addWidget(e.title_label_text, 2, 0)
+        e.layout.addWidget(e.title_label_drawing, 3, 0)
+        e.layout.addWidget(e.title_label_import, 4, 0)
+        
+        e.layout.addWidget(e.input_textbox_text, 2, 2)
+        e.layout.addWidget(e.input_label_drawing, 3, 2)
+        e.layout.addWidget(e.input_label_import, 4, 2)
 
-        e.layout.addWidget(e.output_button_text_tts, 3, 5)
-        e.layout.addWidget(e.output_button_drawing_tts, 4, 5)
-        e.layout.addWidget(e.output_button_import_tts, 5, 5)
+        e.layout.addWidget(e.output_label_text, 2, 3)
+        e.layout.addWidget(e.output_label_drawing, 3, 3)
+        e.layout.addWidget(e.output_label_import, 4, 3)
 
-        e.layout.addWidget(e.input_dropdown_text, 3, 0)
-        e.layout.addWidget(e.input_dropdown_drawing, 4, 0)
-        e.layout.addWidget(e.input_dropdown_import, 5, 0)
-        e.layout.addWidget(e.output_dropdown_text, 3, 4)
-        e.layout.addWidget(e.output_dropdown_drawing, 4, 4)
-        e.layout.addWidget(e.output_dropdown_import, 5, 4)
+        e.layout.addWidget(e.output_button_text_tts, 2, 5)
+        e.layout.addWidget(e.output_button_drawing_tts, 3, 5)
+        e.layout.addWidget(e.output_button_import_tts, 4, 5)
 
+        e.layout.addWidget(e.input_dropdown_text, 2, 1)
+        e.layout.addWidget(e.input_dropdown_drawing, 3, 1)
+        e.layout.addWidget(e.input_dropdown_import, 4, 1)
+        e.layout.addWidget(e.output_dropdown_text, 2, 4)
+        e.layout.addWidget(e.output_dropdown_drawing, 3, 4)
+        e.layout.addWidget(e.output_dropdown_import, 4, 4)
+
+        e.layout.addWidget(e.drawing_label, 5, 3)
+        e.layout.addWidget(e.slider, 6, 3)
+        
         # Widget Characterisation ----------------------------------------------------------------------------------- #
-        e.title_label_input.setText("Input Langauge")
-        e.title_label_output.setText("Output Language")
-        e.title_label_input_dropdown.setText("Input")
-        e.title_label_output_dropdown.setText("Output")
-        e.title_label_buttons.setText("Text to speech")
-        e.input_label_drawing.setText("Drawing:")
-        e.input_label_import.setText("Import:")
+        e.action_file_import = QAction("Import File", e)
+        e.action_file_export = QAction("Export Drawing", e)
+        e.action_file_screenshot = QAction("Translate Drawing", e)
 
-        e.input_dropdown_text.addItems(language.lang_list)
-        e.input_dropdown_drawing.addItems(language.lang_list)
-        e.input_dropdown_import.addItems(language.lang_list)
-        e.output_dropdown_text.addItems(language.lang_list)
-        e.output_dropdown_drawing.addItems(language.lang_list)
-        e.output_dropdown_import.addItems(language.lang_list)
+        e.action_view_fullscreen = QAction("Fullscreen", e)
+        e.action_view_windowed = QAction("Windowed", e)
+
+        e.action_interface_font = QAction("Text Font", e)
+        e.action_interface_colour = QAction("Interface Colour", e)
+
+        e.action_drawing_colour_brush = QAction("Brush Colour", e)
+        e.action_drawing_colour_background = QAction("Background Colour", e)
+        e.action_drawing_clear = QAction("Clear Interface", e)
+        
+        # Create menus for the menubar
+        e.menu_file = e.menubar.addMenu("File")
+        e.menu_interface = e.menubar.addMenu("Interface")
+        e.menu_drawing = e.menubar.addMenu("Drawing")
+
+        # Add actions to the menus in the menubar
+        e.menu_file.addAction(e.action_file_import)
+        e.menu_file.addAction(e.action_file_export)
+        e.menu_file.addAction(e.action_file_screenshot)
+
+        e.menu_interface.addAction(e.action_interface_font)
+        # e.menu_interface.addAction(e.action_interface_colour)
+
+        e.menu_drawing.addAction(e.action_drawing_colour_brush)
+        e.menu_drawing.addAction(e.action_drawing_colour_background)
+        e.menu_drawing.addAction(e.action_drawing_clear)
+
+        # Add text to title labels
+        e.title_label_format.setText("Input Format")
+        e.title_label_input.setText("Input")
+        e.title_label_output.setText("Output")
+        e.title_label_input_dropdown.setText("Input Language")
+        e.title_label_output_dropdown.setText("Output Language")
+        e.title_label_buttons.setText("Text to speech")
+        e.title_label_text.setText("Text:")
+        e.title_label_drawing.setText("Drawing:")
+        e.title_label_import.setText("Import:")
+        
+        # New dropdown to determine the language detected by pytesseract
+        e.input_dropdown_text.addItems(language.lang_list_full)
+        e.input_dropdown_drawing.addItems(language.lang_list_full)
+        e.input_dropdown_import.addItems(language.lang_list_full)
+        e.output_dropdown_text.addItems(language.lang_list_full)
+        e.output_dropdown_drawing.addItems(language.lang_list_full)
+        e.output_dropdown_import.addItems(language.lang_list_full)
+
+        # Keyboard Shortcuts 
+        e.action_file_import.setShortcut("Ctrl + F")
+        e.action_file_export.setShortcut("Ctrl + S")        
         
         # Calling custom methods ----------------------------------------------------------------------------------- #
+        
+        # Adding Menubar Methods
+        e.action_file_import.triggered.connect(e.translateUserImport)
+        e.action_file_export.triggered.connect(e.saveFile)
+        e.action_file_screenshot.triggered.connect(e.translateUserDrawing)
+        e.action_interface_font.triggered.connect(e.fontChange)
+        e.action_interface_colour.triggered.connect(e.interfaceColourChange)
+        e.action_drawing_colour_brush.triggered.connect(e.brushColourChange)
+        e.action_drawing_colour_background.triggered.connect(e.backgroundColourChange)
+        e.action_drawing_clear.triggered.connect(e.backgroundClear)
+
+        # Widget Methods
         e.input_textbox_text.editingFinished.connect(e.translateUserText)
-        #e.menubar.triggered(ui_sections.toolbar_dropdown_list[num][num2]).connect(e.translateUserImport)
         
         e.output_button_text_tts.pressed.connect(e.textToSpeech_text)
+        e.output_button_import_tts.pressed.connect(e.textToSpeech_import)
+        e.output_button_drawing_tts.pressed.connect(e.textToSpeech_drawing)
+        e.slider.valueChanged.connect(e.brushSizeChange)
     
-    def paint(e):
-        e.painter = QPainter(e)
-        e.pic = QPixmap("icon.png")
-        e.painter.drawPixmap(e.rect(), e.pic)
-        e.colour = QColor()
-        # colour.setRed() #Where I stopped, assigning values for all 3 in rgb
-        # painter.setPen(e.colour)
-        # painter.drawRect(40, 40, 400, 200)
+    # Defining Menubar Methods ----------------------------------------------------------------------------------- #
+    def saveFile(e):
+        filePath, _ = QFileDialog.getSaveFileName(e, "Save Image", "",
+                        "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) ")
 
+        if filePath == "":
+            return
+    
+        e.image.save(filePath)
+
+    def brushColourChange(e):
+        e.brushColor =  QColorDialog.getColor()
+
+    def brushSizeChange(e):
+        e.brushSize = e.slider.value()
+
+    def backgroundColourChange(e):
+        e.backgroundColour = QColorDialog.getColor()
+        e.image.fill(e.backgroundColour)
+    
+    def interfaceColourChange(e):
+        e.image_interface = QImage(e.size(), QImage.Format.Format_RGB32)
+        e.interfaceColour = QColorDialog.getColor()
+        e.image_interface.fill(e.interfaceColour)
+    
+    # method for clearing every thing on canvas
+    def backgroundClear(e):
+        e.image.fill(e.backgroundColour)
+        e.update()
+    
+    def fontChange(e):
+        e.interface_font = QFontDialog.getFont()
+        e.setFont(e.interface_font[0])
+    
+    # Defining Widget Methods ----------------------------------------------------------------------------------- #
     def translateUserText(e):
         # Work out which langauges are supported for translation, change the list
-        e.lang_in = e.input_dropdown_text.currentText()
-        e.lang_out = e.output_dropdown_text.currentText()
+        e.lang_in = language.lang_list_code[e.input_dropdown_text.currentIndex()]
+        e.lang_out = language.lang_list_code[e.output_dropdown_text.currentIndex()]
         e.translator = Translator(to_lang=e.lang_out,from_lang=e.lang_in)
 
         e.output_label_text.setText(e.translator.translate(e.input_textbox_text.text())) # Translates text in the textbox and adds it to label
@@ -133,30 +250,104 @@ class Window(QWidget):
         e.lang_in = e.input_dropdown_import.currentText()
         e.lang_out = e.output_dropdown_import.currentText()
         e.translator = Translator(to_lang=e.lang_out,from_lang=e.lang_in)
+        
+        e.file_import, _ = QFileDialog.getOpenFileName(e, "Open Image", "",
+                        "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) ")
 
-        QFileDialog.getOpenFileName()
+        if e.file_import == "":
+            return
+        
+        e.image_import = Image.open(e.file_import)
+        e.text_import = pytesseract.image_to_string(e.image_import)
+
+        e.input_label_import.setText(e.text_import)
+        e.output_label_import.setText(e.translator.translate(e.text_import))
+        
 
     def translateUserDrawing(e):
+        e.image_drawing = Image.open("screenshot.png")
+        e.text_drawing = pytesseract.image_to_string(e.image_drawing)
+
         e.lang_in = e.input_dropdown_drawing.currentText()
         e.lang_out = e.output_dropdown_drawing.currentText()
-        e.translator = Translator(to_lang=e.lang_out,from_lang=e.lang_in) 
+        e.translator = Translator(to_lang=e.lang_out,from_lang=e.lang_in)
+        e.input_label_drawing.setText(e.text_drawing)        
+        e.output_label_drawing.setText(e.translator.translate(e.text_drawing))
     
     def textToSpeech_text(e):
-        e.tts = gTTS(e.translator.translate(e.input_textbox_text.text()))
-        e.tts.save('text_tts.mp3')
-        e.player = QMediaPlayer()
+        e.tts_text = gTTS(e.output_label_text.text())
+        e.tts_text.save('text_tts.mp3')
+        playsound.playsound("text_tts.mp3")
+        os.remove("text_tts.mp3")
 
-        e.directory = QUrl.fromLocalFile("text_tts.mp3")
-        e.player.setSource(e.directory)
-        e.player.play()
+    def textToSpeech_import(e):
+        e.tts_import = gTTS(e.output_label_import.text())
+        e.tts_import.save('import_tts.mp3')
+        playsound.playsound("import_tts.mp3")
+        os.remove("import_tts.mp3")
+
+    def textToSpeech_drawing(e):
+        e.tts_drawing = gTTS(e.output_label_drawing.text())
+        e.tts_drawing.save('drawing_tts.mp3')
+        playsound.playsound("drawing_tts.mp3")
+        os.remove("drawing_tts.mp3")
+
+    
+    # Defining Drawing Methods ----------------------------------------------------------------------------------- #
+    # method for checking mouse cicks
+    def mousePressEvent(e, event):
+
+        # if left mouse button is pressed
+        if event.buttons() == Qt.MouseButton.LeftButton:
+            # make drawing flag true
+            e.drawing = True
+            # make last point to the point of cursor
+            e.lastPoint = event.pos()
+
+    # method for tracking mouse activity
+    def mouseMoveEvent(e, event):
+        
+        # checking if left button is pressed and drawing flag is true
+        if (event.buttons() == Qt.MouseButton.LeftButton) & e.drawing:
+            
+            # creating painter object
+            painter = QPainter(e.image)
+            
+            # set the pen of the painter
+            painter.setPen(QPen(e.brushColor, e.brushSize,
+                            Qt.PenStyle.SolidLine, Qt.PenCapStyle.RoundCap, Qt.PenJoinStyle.RoundJoin))
+            
+            # draw line from the last point of cursor to the current point
+            # this will draw only one step
+            painter.drawLine(e.lastPoint, event.pos())
+            
+            # change the last point
+            e.lastPoint = event.pos()
+            # update
+            e.update()
+
+    # method for mouse left button release
+    def mouseReleaseEvent(e, event):
+
+        if event.buttons() == Qt.MouseButton.LeftButton:
+            # make drawing flag false
+            e.drawing = False
+
+    # paint event
+    def paintEvent(e, event):
+        # create a canvas
+        canvasPainter = QPainter(e)
+        # draw rectangle on the canvas
+        #canvasPainter.drawImage(e.drawing_label.rect(), e.image, e.drawing_pixmap.rect())
+        e.point = QPoint()
+        e.point.setX(425)
+        e.point.setY(150)
+        canvasPainter.setBrushOrigin(e.point)
+        canvasPainter.drawImage(e.point, e.image)
+        e.image.save('screenshot.png')
 
 # Execution
 app = QApplication(sys.argv)
-# app.setStyleSheet('''
-#     QWidget {
-#         font-size: 30px;
-#     }
-# ''')
 screen = Window()
 screen.show()
 sys.exit(app.exec())

@@ -1,27 +1,17 @@
-Afar
-Abkhaz
-Avestan
 Afrikaans
 Akan
 Amharic
-Aragonese
 Arabic
 Assamese
-Avaric
-Aymara
 Azerbaijani
 Bashkir
 Belarusian
 Bulgarian
-Bihari
-Bislama
-Bambara
 Bengali
 Tibetan
 Breton
 Bosnian
 Catalan
-Chechen
 Chamorro
 Corsican
 Cree
@@ -146,7 +136,6 @@ Shona
 Somali
 Albanian
 Serbian
-Swati
 Southern Sotho
 Sundanese
 Swedish
