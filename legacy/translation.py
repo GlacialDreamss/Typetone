@@ -1,6 +1,6 @@
 from recognition import tess
 from translate import Translator
-from stylesheet import language
+from legacy.stylesheet import language
 
 class translation:
     lang_in = language.input

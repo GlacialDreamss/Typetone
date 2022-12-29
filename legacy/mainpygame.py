@@ -4,7 +4,7 @@ import pytesseract as pyt
 from PIL import Image
 
 from input import Input
-from stylesheet import *
+from legacy.stylesheet import *
 from translation import translation
 
 class Game():

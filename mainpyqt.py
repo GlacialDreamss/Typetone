@@ -6,14 +6,12 @@ from PyQt6.QtMultimedia import *
 import sys
 import os
 
-from stylesheet import *
 from translate import Translator
 from gtts import gTTS
 from PIL import Image
 import pretty_errors
 import pytesseract
 import playsound
-import pygame
 
 class Window(QWidget):
     def __init__(e):
@@ -91,6 +89,10 @@ class Window(QWidget):
         e.slider.setTickPosition(QSlider.TickPosition.TicksBelow)
         e.slider.setTickInterval(2)
         
+        # Language lists
+        e.lang_list_tess = ['afr', 'amh', 'ara', 'asm', 'aze', 'aze_cyrl', 'bel', 'ben', 'bod', 'bos', 'bre', 'bul', 'cat', 'ceb', 'ces', 'chi_sim', 'chi_sim_vert', 'chi_tra', 'chi_tra_vert', 'chr', 'cos', 'cym', 'dan', 'deu', 'div', 'dzo', 'ell', 'eng', 'enm', 'epo', 'equ', 'est', 'eus', 'fao', 'fas', 'fil', 'fin', 'fra', 'frk', 'frm', 'fry', 'gla', 'gle', 'glg', 'grc', 'guj', 'hat', 'heb', 'hin', 'hrv', 'hun', 'hye', 'iku', 'ind', 'isl', 'ita', 'ita_old', 'jav', 'jpn', 'jpn_vert', 'kan', 'kat', 'kat_old', 'kaz', 'khm', 'kir', 'kmr', 'kor', 'lao', 'lat', 'lav', 'lit', 'ltz', 'mal', 'mar', 'mkd', 'mlt', 'mon', 'mri', 'msa', 'mya', 'nep', 'nld', 'nor', 'oci', 'ori', 'osd', 'pan', 'pol', 'por', 'pus', 'que', 'ron', 'rus', 'san', 'sin', 'slk', 'slv', 'snd', 'spa', 'spa_old', 'sqi', 'srp', 'srp_latn', 'sun', 'swa', 'swe', 'syr', 'tam', 'tat', 'tel', 'tgk', 'tha', 'tir', 'ton', 'tur', 'uig', 'ukr', 'urd', 'uzb', 'uzb_cyrl', 'vie', 'yid', 'yor']
+        e.lang_list_full = ['Afrikaans','Akan','Amharic','Arabic','Assamese','Azerbaijani','Bashkir','Belarusian','Bulgarian','Bengali','Tibetan','Breton','Bosnian','Catalan','Chamorro','Corsican','Cree','Czech','Old Church Slavonic','Chuvash','Welsh','Danish','German','Divehi','Dzongkha','Ewe','Greek','English','Esperanto','Spanish','Estonian','Basque','Persian','Fula','Finnish','Fijian','Faroese','French','Western Frisian','Irish','Scottish Gaelic','Galician','Gujarati','Manx','Hausa','Hebrew','Hindi','Hiri Motu','Croatian','Haitian','Hungarian','Armenian','Herero','Interlingua','Indonesian','Interlingue','Igbo','Nuosu','Inupiaq','Ido','Icelandic','Italian','Inuktitut','Japanese','Javanese','Georgian','Kongo','Kikuyu','Kwanyama','Kazakh','Kalaallisut','Khmer','Kannada','Korean','Kanuri','Kashmiri','Kurdish','Komi','Cornish','Kyrgyz','Latin','Luxembourgish','Ganda','Limburgish','Lingala','Lao','Lithuanian','Luba-Katanga','Latvian','Malagasy','Marshallese','Māori','Macedonian','Malayalam','Mongolian','Marathi','Malay','Maltese','Burmese','Nauru','Norwegian Bokmål','Northern Ndebele','Nepali','Ndonga','Dutch','Norwegian Nynorsk','Norwegian','Southern Ndebele','Navajo','Chichewa','Occitan','Ojibwe','Oromo','Oriya','Ossetian','Panjabi','Pāli','Polish','Pashto','Portuguese','Quechua','Romansh','Kirundi','Romanian','Russian','Kinyarwanda','Sanskrit','Sardinian','Sindhi','Northern Sami','Sango','Sinhala','Slovak','Slovenian','Shona','Somali','Albanian','Serbian','Southern Sotho','Sundanese','Swedish','Swahili','Tamil','Telugu','Tajik','Thai','Tigrinya','Turkmen','Tagalog','Tswana','Tonga','Turkish','Tsonga','Tatar','Twi','Tahitian','Uyghur','Ukrainian','Urdu','Uzbek','Venda','Vietnamese','Volapük','Walloon','Wolof','Xhosa','Yiddish','Yoruba','Zhuang','Chinese','Zul']
+        e.lang_list_code = ['af','ak','am','ar','as','az','ba','be','bg','bn','bo','br','bs','ca','ch','co','cr','cs','cu','cv','cy','da','de','dv','dz','ee','el','en','eo','es','et','eu','fa','ff','fi','fj','fo','fr','fy','ga','gd','gl','gu','gv','ha','he','hi','ho','hr','ht','hu','hy','hz','ia','id','ie','ig','ii','ik','io','is','it','iu','ja','jv','ka','kg','ki','kj','kk','kl','km','kn','ko','kr','ks','ku','kv','kw','ky','la','lb','lg','li','ln','lo','lt','lu','lv','mg','mh','mi','mk','ml','mn','mr','ms','mt','my','na','nb','nd','ne','ng','nl','nn','no','nr','nv','ny','oc','oj','om','or','os','pa','pi','pl','ps','pt','qu','rm','rn','ro','ru','rw','sa','sc','sd','se','sg','si','sk','sl','sn','so','sq','sr','st','su','sv','sw','ta','te','tg','th','ti','tk','tl','tn','to','tr','ts','tt','tw','ty','ug','uk','ur','uz','ve','vi','vo','wa','wo','xh','yi','yo','za','zh','zu']
 
         # Widgets added to screen ----------------------------------------------------------------------------------- #
         e.layout.addWidget(e.menubar, 0, 0)
@@ -172,12 +174,12 @@ class Window(QWidget):
         e.title_label_import.setText("Import:")
         
         # New dropdown to determine the language detected by pytesseract
-        e.input_dropdown_text.addItems(language.lang_list_full)
-        e.input_dropdown_drawing.addItems(language.lang_list_full)
-        e.input_dropdown_import.addItems(language.lang_list_full)
-        e.output_dropdown_text.addItems(language.lang_list_full)
-        e.output_dropdown_drawing.addItems(language.lang_list_full)
-        e.output_dropdown_import.addItems(language.lang_list_full)
+        e.input_dropdown_text.addItems(e.lang_list_full)
+        e.input_dropdown_drawing.addItems(e.lang_list_full)
+        e.input_dropdown_import.addItems(e.lang_list_full)
+        e.output_dropdown_text.addItems(e.lang_list_full)
+        e.output_dropdown_drawing.addItems(e.lang_list_full)
+        e.output_dropdown_import.addItems(e.lang_list_full)
 
         # Keyboard Shortcuts 
         e.action_file_import.setShortcut("Ctrl + F")
@@ -240,16 +242,16 @@ class Window(QWidget):
     # Defining Widget Methods ----------------------------------------------------------------------------------- #
     def translateUserText(e):
         # Work out which langauges are supported for translation, change the list
-        e.lang_in = language.lang_list_code[e.input_dropdown_text.currentIndex()]
-        e.lang_out = language.lang_list_code[e.output_dropdown_text.currentIndex()]
-        e.translator = Translator(to_lang=e.lang_out,from_lang=e.lang_in)
+        e.text_lang_in = e.lang_list_code[e.input_dropdown_text.currentIndex()]
+        e.text_lang_out = e.lang_list_code[e.output_dropdown_text.currentIndex()]
+        e.text_translator = Translator(to_lang=e.text_lang_out,from_lang=e.text_lang_in)
 
-        e.output_label_text.setText(e.translator.translate(e.input_textbox_text.text())) # Translates text in the textbox and adds it to label
+        e.output_label_text.setText(e.text_translator.translate(e.input_textbox_text.text())) # Translates text in the textbox and adds it to label
     
     def translateUserImport(e):
-        e.lang_in = e.input_dropdown_import.currentText()
-        e.lang_out = e.output_dropdown_import.currentText()
-        e.translator = Translator(to_lang=e.lang_out,from_lang=e.lang_in)
+        e.import_lang_in = e.input_dropdown_import.currentText()
+        e.import_lang_out = e.output_dropdown_import.currentText()
+        e.import_translator = Translator(to_lang=e.import_lang_out,from_lang=e.import_lang_in)
         
         e.file_import, _ = QFileDialog.getOpenFileName(e, "Open Image", "",
                         "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) ")
@@ -261,18 +263,18 @@ class Window(QWidget):
         e.text_import = pytesseract.image_to_string(e.image_import)
 
         e.input_label_import.setText(e.text_import)
-        e.output_label_import.setText(e.translator.translate(e.text_import))
+        e.output_label_import.setText(e.import_translator.translate(e.text_import))
         
 
     def translateUserDrawing(e):
         e.image_drawing = Image.open("screenshot.png")
         e.text_drawing = pytesseract.image_to_string(e.image_drawing)
 
-        e.lang_in = e.input_dropdown_drawing.currentText()
-        e.lang_out = e.output_dropdown_drawing.currentText()
-        e.translator = Translator(to_lang=e.lang_out,from_lang=e.lang_in)
+        e.drawing_lang_in = e.input_dropdown_drawing.currentText()
+        e.drawing_lang_out = e.output_dropdown_drawing.currentText()
+        e.drawing_translator = Translator(to_lang=e.drawing_lang_out,from_lang=e.drawing_lang_in)
         e.input_label_drawing.setText(e.text_drawing)        
-        e.output_label_drawing.setText(e.translator.translate(e.text_drawing))
+        e.output_label_drawing.setText(e.drawing_translator.translate(e.text_drawing))
     
     def textToSpeech_text(e):
         e.tts_text = gTTS(e.output_label_text.text())
