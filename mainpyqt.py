@@ -342,7 +342,7 @@ class Window(QWidget):
         # draw rectangle on the canvas
         #canvasPainter.drawImage(e.drawing_label.rect(), e.image, e.drawing_pixmap.rect())
         e.point = QPoint()
-        e.point.setX(425)
+        e.point.setX(452)
         e.point.setY(150)
         canvasPainter.setBrushOrigin(e.point)
         canvasPainter.drawImage(e.point, e.image)
